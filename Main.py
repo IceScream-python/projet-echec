@@ -5,3 +5,4 @@ class piece:
     self.couleur = couleur
     
   
+print("ok boomer")
