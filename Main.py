@@ -3,11 +3,24 @@ class piece:
         self.x = absisse
         self.y = ordonnee
         self.couleur = couleur
+    
+    def mouvement(self,deplacement_x, deplacement_y):
+        if plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0] == "empty":
+            plateau.plateau_jeu[self.y+deplacement_y-1][self.x+deplacement_x-1] = (self, self.x+deplacement_x, self.y+deplacement_y)
+            plateau.plateau_jeu[self.y-1][self.x-1] = ("empty",self.x,self.y)
+            self.y += deplacement_y
+            self.x += deplacement_x
+            print(self)
+            print(plateau)
+        elif type(plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0]) == pion and plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0].couleur != self.couleur:
+            print('je peux manger')
+        else:
+            print("Je ne peux pas avancer")
 	
 
 class pion(piece):
     def __init__(self,absisse,ordonnee,couleur):
-        self.classe = 'pion'
+        self.categorie = 'pion'+str(couleur[0]).upper()
         super().__init__(absisse,ordonnee,couleur)
 
     def __str__(self):
@@ -25,18 +38,7 @@ class pion(piece):
     def gauche(self):
         self.mouvement(-1,0)
 
-    def mouvement(self,deplacement_x, deplacement_y):
-        if plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0] == "empty":
-            plateau.plateau_jeu[self.y+deplacement_y-1][self.x+deplacement_x-1] = (self, self.x+deplacement_x, self.y+deplacement_y)
-            plateau.plateau_jeu[self.y-1][self.x-1] = ("empty",self.x,self.y)
-            self.y += deplacement_y
-            self.x += deplacement_x
-            print(self)
-            print(plateau)
-        elif type(plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0]) == pion and plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0].couleur != self.couleur:
-            print('je peux manger')
-        else:
-            print("Je ne peux pas avancer")
+
 
 
 class Plateau:
@@ -60,7 +62,7 @@ class Plateau:
             for x in y:
                 string += "|"
                 try:
-                    string += x[0].classe + " "
+                    string += x[0].categorie
                 except:
                     string += x[0]
         return string
