@@ -32,7 +32,7 @@ class pion(piece):
         super().__init__(absisse,ordonnee,couleur)
 
     def __str__(self):
-        return f"Pion, ({self.x},{self.y})"
+        return f"Pion {self.couleur}, ({self.x},{self.y})"
     
 
 
@@ -54,7 +54,7 @@ class tour(piece):
         super().__init__(absisse,ordonnee,couleur)
 
     def __str__(self):
-        return f"Tour, ({self.x},{self.y})"
+        return f"Tour {self.couleur}, ({self.x},{self.y})"
 
     def avancer(self,nb):
         if self.couleur == "blanc":
@@ -74,7 +74,7 @@ class fou(piece):
         super().__init__(absisse,ordonnee,couleur)
 
     def __str__(self):
-        return f"Fou, ({self.x},{self.y})"
+        return f"Fou {self.couleur}, ({self.x},{self.y})"
 
     def avancer_droite(self):
         if self.couleur == "blanc":
