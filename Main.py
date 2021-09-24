@@ -47,6 +47,26 @@ class pion(piece):
 
     def gauche(self):
         self.mouvement(-1,0)
+	
+class tour(piece):
+    def __init__(self,absisse,ordonnee,couleur):
+        self.categorie = 'tour'+str(couleur[0]).upper()
+        super().__init__(absisse,ordonnee,couleur)
+
+    def __str__(self):
+        return f"Tour, ({self.x},{self.y})"
+
+    def avancer(self,nb):
+        if self.couleur == "blanc":
+            self.mouvement(0,nb)
+        else:
+            self.mouvement(0,-nb)
+
+    def droite(self,nb):
+        self.mouvement(-nb,0)
+
+    def gauche(self,nb):
+        self.mouvement(nb,0)
 
 class fou(piece):
     def __init__(self,absisse,ordonnee,couleur):
@@ -113,10 +133,11 @@ class Plateau:
             return self.plateau_jeu[y-1][x-1]
         except:
             return "out"
+t1 = tour(4,1,'blanc')
 f1 = fou(2,1,'blanc')
 p1 = pion(1,1,'blanc')
 p2 = pion(1,2,'noir')
 p3 = pion(4,4,'noir')
 p4 = pion(4,3,'noir')
-plateau = Plateau([p1,p2,p3,p4],4)
+plateau = Plateau([p1,p2,p3,p4,f1,t1],4)
 print(plateau)
