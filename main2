@@ -120,15 +120,16 @@ class Plateau:
     def __str__(self):
         string=" "
         for i in range(1,size_plateau+1):
-            string += "   " + str(i) + "  "
+            string += " "*5 + str(i) + " "*4
         for y in self.plateau_jeu:
-            string +=  "\n" + correspondance[y[0][2]]
+            string +=  "\n\n" + correspondance[y[0][2]]
             for x in y:
                 string += "|"
                 try:
-                    string += x[0].categorie
+                    string += x[0].categorie + " " * (9-len(x[0].categorie))
                 except:
-                    string += x[0]
+                    string += x[0] + " "*4
+            string += "|"
         return string
 
     def contenu_case(self,x,y):
@@ -176,8 +177,8 @@ def fini():
         return True
     return False
 
-correspondance = {'A':1,1:'A','B':2,2:'B','C':3,3:'C','D':4,4:'D','E':5,5:'E','F':6,6:'F'}
-size_plateau = 5
+correspondance = {'A':1,1:'A','B':2,2:'B','C':3,3:'C','D':4,4:'D','E':5,5:'E','F':6,6:'F','G':7,7:'G'}
+size_plateau = 7
 liste_piece = []
 
 for i in range(1,size_plateau+1):
@@ -189,10 +190,12 @@ for i in range(1,size_plateau+1):
     elif i== size_plateau-1 or i == 2:
         liste_piece.append( fou(i,1,'blanc') )
         liste_piece.append( fou(i,size_plateau,'noir') )
+    elif i == size_plateau-2 or i == 3:
+        liste_piece.append( cavalier(i,1,'blanc') )
+        liste_piece.append( cavalier(i,size_plateau,'noir') )
     elif i== (size_plateau+1)//2:
         liste_piece.append( reine(i,1,'blanc') )
         liste_piece.append( reine(i,size_plateau,'noir') )
-liste_piece.append(cavalier(3,3,'blanc'))
 plateau = Plateau(liste_piece,size_plateau)
 
 tour = 0
