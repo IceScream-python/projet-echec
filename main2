@@ -79,16 +79,29 @@ class reine(piece):
         super().__init__(absisse,ordonnee,couleur)
 
     def __str__(self):
-        return f"Reine, ({self.x},{self.y})"
+        return f"Reine {self.couleur}, ({self.x},{self.y})"
 
     def peut_avancer(self,x,y):
         if (abs(x-self.x) == abs(y-self.y) and x != self.x ) or (self.x == x and y != self.y) or (self.y == y and self.x != x):
-            print("hello")
             if plateau.peut_avancer_ligne(self,x,y):
                 return self.mouvement(x-self.x,y-self.y)
         else:
             return False
 
+
+class cavalier(piece):
+    def __init__(self,absisse,ordonnee,couleur):
+        self.categorie = 'cavalier'+str(couleur[0]).upper()
+        super().__init__(absisse,ordonnee,couleur)
+    
+    def __str__(self):
+        return f"Cavalier {self.couleur}, ({self.x},{self.y})"
+
+    def peut_avancer(self,x,y):
+        if (abs(x - self.x) == 2 and abs(y - self.y) == 1) or (abs(x - self.x) == 1 and abs(y - self.y == 2)):
+            return self.mouvement(x-self.x,y-self.y)
+        else:
+            return False
 
 class Plateau:
     def __init__(self, liste, size):
@@ -179,7 +192,7 @@ for i in range(1,size_plateau+1):
     elif i== (size_plateau+1)//2:
         liste_piece.append( reine(i,1,'blanc') )
         liste_piece.append( reine(i,size_plateau,'noir') )
-liste_piece.append(reine(3,3,'blanc'))
+liste_piece.append(cavalier(3,3,'blanc'))
 plateau = Plateau(liste_piece,size_plateau)
 
 tour = 0
@@ -207,4 +220,3 @@ if plateau.nombre_piece('blanc') == 0:
         print( "Victoire des Noirs")
 elif plateau.nombre_piece('noir') == 0:
         print( "Victoire des Blancs")
-	
