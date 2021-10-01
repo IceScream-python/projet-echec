@@ -1,0 +1,105 @@
+import math
+
+class piece:
+    def __init__(self,absisse,ordonnee,couleur):
+        self.x = absisse
+        self.y = ordonnee
+        self.couleur = couleur
+
+    def mouvement(self,deplacement_x, deplacement_y, plateau):
+        categories = [pion, fou, reine, tour, cavalier]
+        if self.x != None and self.y != None:
+            if plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0] == "empty":
+                plateau.plateau_jeu[self.y+deplacement_y-1][self.x+deplacement_x-1] = (self, self.x+deplacement_x, self.y+deplacement_y)
+                plateau.plateau_jeu[self.y-1][self.x-1] = ("empty",self.x,self.y)
+                self.y += deplacement_y
+                self.x += deplacement_x
+            elif type(plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0]) in categories and plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0].couleur != self.couleur:
+                plateau.contenu_case(self.x+deplacement_x,self.y+deplacement_y)[0].est_mange()
+                plateau.plateau_jeu[self.y+deplacement_y-1][self.x+deplacement_x-1] = (self, self.x+deplacement_x, self.y+deplacement_y)
+                plateau.plateau_jeu[self.y-1][self.x-1] = ("empty",self.x,self.y)
+                self.y += deplacement_y
+                self.x += deplacement_x
+            else:
+                return False
+            return True
+	
+    def est_mange(self):
+        self.x = None
+        self.y = None
+
+class pion(piece):
+    def __init__(self,absisse,ordonnee,couleur):
+        self.categorie = 'pion'+str(couleur[0]).upper()
+        super().__init__(absisse,ordonnee,couleur)
+
+    def __str__(self):
+        return f"Pion {self.couleur}, ({self.x},{self.y})"
+
+
+    def peut_avancer(self,x,y, plateau):
+        if (abs(x-self.x) == 1 and self.y == y) or (self.x == x and abs(y-self.y) == 1):
+            return self.mouvement(x-self.x,y-self.y, plateau)
+        else:
+            return False
+
+class fou(piece):
+    def __init__(self,absisse,ordonnee,couleur):
+        self.categorie = 'fou_'+str(couleur[0]).upper()
+        super().__init__(absisse,ordonnee,couleur)
+
+    def __str__(self):
+        return f"Fou {self.couleur}, ({self.x},{self.y})"
+
+
+    def peut_avancer(self,x,y, plateau):
+        if (abs(x-self.x) == abs(y-self.y) and x != self.x ) or (self.x == x and y != self.y):
+            if plateau.peut_avancer_ligne(self,x-self.x,y-self.y):
+                return self.mouvement(x-self.x,y-self.y, plateau)
+        else:
+            return False
+
+class tour(piece):
+    def __init__(self,absisse,ordonnee,couleur):
+        self.categorie = 'tour'+str(couleur[0]).upper()
+        super().__init__(absisse,ordonnee,couleur)
+
+    def __str__(self):
+        return f"Tour {self.couleur}, ({self.x},{self.y})"
+
+    def peut_avancer(self,x,y, plateau):
+        if (self.x == x and self.y != y) or (self.y == y and self.x != x):
+            if plateau.peut_avancer_ligne(self,x-self.x,y-self.y):
+                return self.mouvement(x-self.x,y-self.y, plateau)
+
+
+class reine(piece):
+    def __init__(self,absisse,ordonnee,couleur):
+        self.categorie = 'reine'+str(couleur[0]).upper()
+        super().__init__(absisse,ordonnee,couleur)
+
+    def __str__(self):
+        return f"Reine {self.couleur}, ({self.x},{self.y})"
+
+    def peut_avancer(self,x,y, plateau):
+        if (abs(x-self.x) == abs(y-self.y) and x != self.x ) or (self.x == x and y != self.y) or (self.y == y and self.x != x):
+            if plateau.peut_avancer_ligne(self,x-self.x,y-self.y):
+                return self.mouvement(x-self.x,y-self.y, plateau)
+        else:
+            return False
+
+
+class cavalier(piece):
+    def __init__(self,absisse,ordonnee,couleur):
+        self.categorie = 'cavalier'+str(couleur[0]).upper()
+        super().__init__(absisse,ordonnee,couleur)
+
+    def __str__(self):
+        return f"Cavalier {self.couleur}, ({self.x},{self.y})"
+
+    def peut_avancer(self,x,y, plateau):
+        if (abs(x - self.x) == 2 and abs(y - self.y) == 1) or (abs(x - self.x) == 1 and abs(y - self.y) == 2):
+            return self.mouvement(x-self.x,y-self.y, plateau)
+        else:
+            return False
+
