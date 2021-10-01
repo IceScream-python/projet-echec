@@ -1,0 +1,69 @@
+import math
+
+class Plateau:
+    def __init__(self, liste, size):
+        
+        self.plateau_jeu = list()
+        self.coordonees = {}
+        for pion in liste:
+            self.coordonees[(pion.x,pion.y)] = pion
+        for y in range(1, size+1):
+            self.plateau_jeu.append( list() )
+            for x in range(1, size+1):
+                try:
+                    self.plateau_jeu[y-1].append( (self.coordonees[(x,y)],x,y) )
+                except:
+                    self.plateau_jeu[y-1].append( ("empty",x,y) )
+
+    def __str__(self):
+        correspondance = {'A':1,1:'A','B':2,2:'B','C':3,3:'C','D':4,4:'D','E':5,5:'E','F':6,6:'F','G':7,7:'G'}
+        string=" "
+        for i in range(1,len(self.plateau_jeu)+1):
+            string += " "*5 + str(i) + " "*4
+        for y in self.plateau_jeu:
+            string +=  "\n\n" + correspondance[y[0][2]]
+            for x in y:
+                string += "|"
+                try:
+                    string += x[0].categorie + " " * (9-len(x[0].categorie))
+                except:
+                    string += x[0] + " "*4
+            string += "|"
+        return string
+
+
+    def contenu_case(self,x,y):
+        try:
+            assert x!=0 and y!=0
+            return self.plateau_jeu[y-1][x-1]
+        except:
+            return ""
+
+    def peut_avancer_ligne(self,piece,x,y):
+        sx = int(math.copysign(1,x))
+        sy = int(math.copysign(1,y))
+        if piece.x == x:
+            for i in range(1,abs(y-piece.y)):
+                if not self.contenu_case(piece.x,piece.y+ (sy*i))[0] =='empty':
+                    return False
+        elif piece.y == y:
+            for i in range(1,abs(x-piece.x)):
+                if not self.contenu_case(piece.x + (sx * i),piece.y)[0] == 'empty':
+                    return False
+        else:
+            for i in range(1,abs(x-piece.x)):
+                if not self.contenu_case(piece.x + (sx * i),piece.y+ (sy*i))[0] == 'empty':
+                    return False
+        return True
+
+    def nombre_piece(self, couleur):
+        compteur = 0
+        for y in self.plateau_jeu:
+            for x in y:
+                try:
+                    if x[0].couleur == couleur:
+                        compteur += 1
+                except:
+                    pass
+        print(couleur, compteur)
+        return compteur
