@@ -1,19 +1,19 @@
 import math
-from piece_echec import *
+from piece_echec import * 
 from plateau_echec import *
 
-def fini():
+def fini(): # regarde si il reste d'une pièce dans chaque couleur 
     if plateau.nombre_piece('blanc') == 0:
         return True
     elif plateau.nombre_piece('noir') == 0:
         return True
     return False
 
-correspondance = {'A':1,1:'A','B':2,2:'B','C':3,3:'C','D':4,4:'D','E':5,5:'E','F':6,6:'F','G':7,7:'G'}
+correspondance = {'A':1,1:'A','B':2,2:'B','C':3,3:'C','D':4,4:'D','E':5,5:'E','F':6,6:'F','G':7,7:'G'} 
 size_plateau = 7
 liste_piece = []
 
-for i in range(1,size_plateau+1):
+for i in range(1,size_plateau+1): #place dans les pièces dans une configuration prédéfini
     liste_piece.append( pion(i,2,"blanc"))
     liste_piece.append( pion(i,size_plateau-1,"noir"))
     if i == size_plateau or i==1:
@@ -31,7 +31,7 @@ for i in range(1,size_plateau+1):
 plateau = Plateau(liste_piece,size_plateau)
 
 tour = 0
-while not fini():
+while not fini(): # fait le tour par tour
     if tour%2==0:
         joueur = 'blanc'
     else:
@@ -49,7 +49,7 @@ while not fini():
             print("\nVotre pièce ne peut pas se deplacer vers cet endroit.\n")
     except:
         print("\nCette case ne contient pas une de vos pièces\n")
-
+# affiche qui a gagné
 if plateau.nombre_piece('blanc') == 0:
         print( "Victoire des Noirs")
 elif plateau.nombre_piece('noir') == 0:
